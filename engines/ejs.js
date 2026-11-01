@@ -351,17 +351,10 @@ EjsEngine.prototype.render = function(filename, data, callback) {
  * @param  {HttpContext=} context
  * @returns {EjsEngine}
  */
-EjsEngine.createInstance = function(context) {
+EjsEngine.createInstance = function createInstance(context) {
     return new EjsEngine(context);
 };
 
-if (typeof exports !== 'undefined') {
-    module.exports.EjsEngine = EjsEngine;
-    /**
-     * @param  {HttpContext=} context
-     * @returns {EjsEngine}
-     */
-    module.exports.createInstance = function(context) {
-        return EjsEngine.createInstance(context);
-    };
+module.exports = {
+    EjsEngine
 }

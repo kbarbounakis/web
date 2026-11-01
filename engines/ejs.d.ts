@@ -5,6 +5,7 @@ import {HttpViewEngine} from "../types";
 export declare class EjsEngine extends HttpViewEngine {
     constructor(context: HttpContext);
 
+    html?: any;
     context: HttpContext;
     getContext(): HttpContext;
     filter(name: string, filterFunc: void): void;
