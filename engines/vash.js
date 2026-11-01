@@ -7,32 +7,6 @@ var path = require('path');
 var fs = require('fs');
 var contextProperty = Symbol('context');
 var _ = require('lodash');
-var PostExecuteResultArgs = require('./../handlers/directive').PostExecuteResultArgs;
-var DirectiveEngine = require('./../handlers/directive').DirectiveEngine;
-var HttpViewContext = require('./../mvc').HttpViewContext;
-
-/**
- * @this VashEngine
- * @param {string} result
- * @param {*} data
- * @param {Function} callback
- */
-function postRender(result, data, callback) {
-    var directiveHandler = new DirectiveEngine();
-    var viewContext = new HttpViewContext(this.context);
-    viewContext.body = result;
-    viewContext.data = data;
-    var args = _.assign(new PostExecuteResultArgs(), {
-        "context": this.context,
-        "target": viewContext
-    });
-    directiveHandler.postExecuteResult(args, function(err) {
-        if (err) {
-            return callback(err);
-        }
-        return callback(null, viewContext.body);
-    });
-}
 
 /**
  *
@@ -93,12 +67,7 @@ VashEngine.prototype.render = function(filename, data, callback) {
                     }
                     try {
                         var result = ctx.finishLayout();
-                        return postRender.bind(self)(result, data, function(err, finalResult) {
-                            if (err) {
-                                return callback(err);
-                            }
-                            return callback(null, finalResult);
-                        });
+                        return callback(null, result);
                     }
                     catch(err) {
                         return callback(err);

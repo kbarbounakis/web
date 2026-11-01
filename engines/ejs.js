@@ -6,42 +6,17 @@ var ejs = require('ejs');
 var path = require('path');
 var fs = require('fs');
 var Symbol = require('symbol');
-var DirectiveEngine = require('./../handlers/directive').DirectiveEngine;
-var PostExecuteResultArgs = require('./../handlers/directive').PostExecuteResultArgs;
-var HttpViewContext = require('./../mvc').HttpViewContext;
 var layoutFileProperty = Symbol();
 var viewProperty = Symbol();
 var scriptsProperty = Symbol();
 var stylesheetsProperty = Symbol();
 
 /**
- * @this EjsEngine
- * @param {string} result
- * @param {*} data
- * @param {Function} callback
- */
-function postRender(result, data, callback) {
-    var directiveHandler = new DirectiveEngine();
-    var viewContext = new HttpViewContext(this.context);
-    viewContext.body = result;
-    viewContext.data = data;
-    var args = _.assign(new PostExecuteResultArgs(), {
-        "context": this.context,
-        "target": viewContext
-    });
-    directiveHandler.postExecuteResult(args, function(err) {
-        if (err) {
-            return callback(err);
-        }
-        return callback(null, viewContext.body);
-    });
-}
-/**
  * @class
  */ 
 function EjsLocals() {
-    this[scriptsProperty] = new Array();
-    this[stylesheetsProperty] = new Array();
+    this[scriptsProperty] = [];
+    this[stylesheetsProperty] = [];
 }
 /**
  * @param {string} view
@@ -107,7 +82,6 @@ EjsLocals.prototype.partial = function(view, data){
         if (this.html && this.html.context) {
             context = this.html.context;
         }
-        // if data is array
         if (_.isArray(data)) {
             return _.map(data, function(item) {
                 // init locals
@@ -283,7 +257,7 @@ EjsEngine.prototype.render = function(filename, data, callback) {
                 model: data,
                 html:new HttpViewHelper(self.context)
         });
-        // set current view propertry
+        // set current view property
         locals[viewProperty] = filename;
         //get view header (if any)
         var matcher = /^(\s*)<%#(.*?)%>/;
@@ -328,12 +302,7 @@ EjsEngine.prototype.render = function(filename, data, callback) {
                         }
                         return callback(err);
                     }
-                    return postRender.bind(self)(result, locals.model, function(err, finalResult) {
-                        if (err) {
-                            return callback(err);
-                        }
-                        return callback(null, finalResult);
-                    });
+                    return callback(null, result);
                 }
                 catch (err) {
                     callback(err);
@@ -363,20 +332,10 @@ EjsEngine.prototype.render = function(filename, data, callback) {
                        return callback(err);
                    } 
                    // execute post render
-                   return postRender.bind(self)(result, locals.model, function(err, finalResult) {
-                        if (err) {
-                            return callback(err);
-                        }
-                        return callback(null, finalResult);
-                    });
+                   return callback(null, result);
                 });
             }
-            return postRender.bind(self)(htmlResult, locals.model, function(err, finalResult) {
-                if (err) {
-                    return callback(err);
-                }
-                return callback(null, finalResult);
-            });
+            return callback(null, htmlResult);
         }
     }
     catch (err) {

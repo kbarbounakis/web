@@ -7,7 +7,7 @@ export declare class VashEngine extends HttpViewEngine {
 
     context: HttpContext;
     getContext(): HttpContext;
-    render(filename: string, data: any, callback: (err?: Error, res?: string) => void)
+    render(filename: string, data: any, callback: (err?: Error, res?: string) => void): void;
 
 }
 

@@ -4,33 +4,6 @@ var pug = require('pug');
 var LangUtils = require('@themost/common').LangUtils;
 var ArgumentError = require('@themost/common').ArgumentError;
 var HttpViewEngine = require('../types').HttpViewEngine;
-var _ = require('lodash');
-var PostExecuteResultArgs = require('./../handlers/directive').PostExecuteResultArgs;
-var DirectiveEngine = require('./../handlers/directive').DirectiveEngine;
-var HttpViewContext = require('./../mvc').HttpViewContext;
-
-/**
- * @this JadeEngine
- * @param {string} result
- * @param {*} data
- * @param {Function} callback
- */
-function postRender(result, data, callback) {
-    var directiveHandler = new DirectiveEngine();
-    var viewContext = new HttpViewContext(this.context);
-    viewContext.body = result;
-    viewContext.data = data;
-    var args = _.assign(new PostExecuteResultArgs(), {
-        "context": this.context,
-        "target": viewContext
-    });
-    directiveHandler.postExecuteResult(args, function(err) {
-        if (err) {
-            return callback(err);
-        }
-        return callback(null, viewContext.body);
-    });
-}
 /**
  * @class
  * @param {HttpContext=} context
@@ -74,12 +47,7 @@ JadeEngine.prototype.render = function(file, data, callback) {
                     html:html,
                     model:data
                 });
-                return postRender.bind(self)(result, data, function(err, finalResult) {
-                    if (err) {
-                        return callback(err);
-                    }
-                    return callback(null, finalResult);
-                });
+                return callback(null, result);
             }
             catch (err) {
                     return callback(err);

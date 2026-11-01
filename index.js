@@ -14,7 +14,6 @@ var HttpHiddenController = require('./controllers/hidden');
 var _auth = require('./handlers/auth');
 var _basic_auth = require('./handlers/basic-auth');
 var _cors = require('./handlers/cors');
-var _directive = require('./handlers/directive');
 var _json = require('./handlers/json');
 var _multipart = require('./handlers/multipart');
 var _node_modules = require('./handlers/node-modules');
@@ -36,10 +35,7 @@ var _cache = require('./cache');
 var _ejs = require('./engines/ejs');
 var _jade = require('./engines/jade');
 var _md = require('./engines/md');
-var _ng = require('./engines/ng');
 var _vash = require('./engines/vash');
-
-var _module = require('./angular/module');
 
 var _odata = require('./odata');
 var _service_configuration = require('./services-configuration');
@@ -92,7 +88,6 @@ if (typeof exports !== 'undefined')
 
     module.exports.BasicAuthHandler = _basic_auth.BasicAuthHandler;
     module.exports.CorsHandler = _cors.CorsHandler;
-    module.exports.DirectiveEngine = _directive.DirectiveEngine;
     module.exports.JsonHandler = _json.JsonHandler;
     module.exports.MultipartHandler = _multipart.MultipartHandler;
     module.exports.NodeModulesHandler = _node_modules.NodeModulesHandler;
@@ -122,11 +117,8 @@ if (typeof exports !== 'undefined')
 
     module.exports.EjsEngine = _ejs.EjsEngine;
     module.exports.MarkdownEngine = _md.MarkdownEngine;
-    module.exports.NgEngine = _ng.NgEngine;
     module.exports.JadeEngine = _jade.JadeEngine;
     module.exports.VashEngine = _vash.VashEngine;
-
-    module.exports.AngularServerModule = _module.AngularServerModule;
 
     module.exports.ODataModelBuilderConfiguration = _odata.ODataModelBuilderConfiguration;
     module.exports.ODataJsonResult = _odata.ODataJsonResult;
