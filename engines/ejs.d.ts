@@ -8,7 +8,7 @@ export declare class EjsEngine extends HttpViewEngine {
     context: HttpContext;
     getContext(): HttpContext;
     filter(name: string, filterFunc: void): void;
-    render(filename: string, data: any, callback: (err?: Error, res?: string) => void)
+    render(filename: string, data: any, callback: (err?: Error, res?: string) => void): void;
 
 }
 

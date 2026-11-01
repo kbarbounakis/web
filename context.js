@@ -718,17 +718,11 @@ HttpContext.prototype.resolveUrl = function(appRelativeUrl) {
     return this.getApplication().resolveUrl(appRelativeUrl);
 };
 
+function createInstance(request, response) {
+    return new HttpContext(request, response);
+}
 
-if (typeof exports !== 'undefined') {
-    module.exports.HttpContext = HttpContext;
-    /**
-     * Creates an instance of HttpContext class.
-     * @param {ClientRequest} request
-     * @param {ServerResponse} response
-     * @returns {HttpContext}
-     */
-    module.exports.createInstance = function (request, response) {
-
-        return new HttpContext(request, response);
-    }
+module.exports = {
+    HttpContext,
+    createInstance
 }

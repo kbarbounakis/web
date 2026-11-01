@@ -73,10 +73,9 @@ EjsLocals.prototype.partial = function(view, data){
     }
     // if data is undefined
     if (typeof data === 'undefined') {
-        // do nothing  
+        // do nothing
         return;
-    }
-    else {
+    } else {
         // get context
         var context;
         if (this.html && this.html.context) {
